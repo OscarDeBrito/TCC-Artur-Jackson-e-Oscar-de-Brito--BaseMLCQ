@@ -1,2 +1,11 @@
-# TCC-Artur-Jackson-e-Oscar-de-Brito---Solu-o
-Repositório com os arquivos de limpeza e processados da base MLCQ para o trabalho de TCC  de Artur Jackson e Oscar de Brito
+# MLCQ - Limpeza e Validação da Base de Dados
+
+Repositório contendo o processamento e validação da base de dados **MLCQ (Multi-Level Code Smell Samples)** para o Trabalho de Conclusão de Curso.
+
+---
+
+## 👥 Autores
+
+- **Artur Jackson**
+- **Oscar de Brito**
+
