@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "system": "Responda de forma objetiva",
+    "prompt": "O que é recursão?"
+  },
+  {
+    "id": 2,
+    "system": "Responda como professor",
+    "prompt": "O que é recursão?"
+  }
+]

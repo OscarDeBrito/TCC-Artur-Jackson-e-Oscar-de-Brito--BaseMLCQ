@@ -1,0 +1,13 @@
+# chaves
+.env
+
+# outputs de LLM
+*.jsonl
+*.csv
+
+# python
+__pycache__/
+*.pyc
+
+# vscode (opcional)
+.vscode/
