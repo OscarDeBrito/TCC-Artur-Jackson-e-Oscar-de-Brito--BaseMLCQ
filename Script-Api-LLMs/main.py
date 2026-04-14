@@ -7,6 +7,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 from openai import OpenAI
 from google import genai
+from anthropic import Anthropic
 
 # carregar .env
 load_dotenv()
@@ -14,6 +15,14 @@ load_dotenv()
 # clientes
 openai_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 gemini_client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+
+# DeepSeek usa o mesmo SDK da OpenAI
+deepseek_client = OpenAI(
+    api_key=os.getenv("DEEPSEEK_API_KEY"),
+    base_url="https://api.deepseek.com"
+)
+
+claude_client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
 
 OUTPUT_FILE = "outputs.jsonl"
 
@@ -80,6 +89,68 @@ def call_gemini(system, prompt):
         }
 
 
+def call_deepseek(system, prompt):
+    start = time.time()
+    try:
+        r = deepseek_client.chat.completions.create(
+            model="deepseek-reasoner",  # troque para "deepseek-chat" se quiser
+            messages=[
+                {"role": "system", "content": system},
+                {"role": "user", "content": prompt}
+            ]
+        )
+
+        return {
+            "status": "success",
+            "response": r.choices[0].message.content,
+            "latency": round((time.time() - start) * 1000, 2),
+            "raw": r.model_dump()
+        }
+
+    except Exception as e:
+        return {
+            "status": "error",
+            "response": None,
+            "latency": round((time.time() - start) * 1000, 2),
+            "error": str(e),
+            "raw": None
+        }
+
+
+def call_claude(system, prompt):
+    start = time.time()
+    try:
+        r = claude_client.messages.create(
+            model="claude-sonnet-4-5",
+            max_tokens=200,
+            system=system,
+            messages=[
+                {"role": "user", "content": prompt}
+            ]
+        )
+
+        response_text = ""
+        for block in r.content:
+            if getattr(block, "type", None) == "text":
+                response_text += block.text
+
+        return {
+            "status": "success",
+            "response": response_text,
+            "latency": round((time.time() - start) * 1000, 2),
+            "raw": r.model_dump()
+        }
+
+    except Exception as e:
+        return {
+            "status": "error",
+            "response": None,
+            "latency": round((time.time() - start) * 1000, 2),
+            "error": str(e),
+            "raw": None
+        }
+
+
 def main():
     with open("prompts.json", "r", encoding="utf-8") as f:
         prompts = json.load(f)
@@ -93,7 +164,6 @@ def main():
 
         # OpenAI
         res_openai = call_openai(system, text)
-
         save_jsonl({
             "run_id": str(uuid.uuid4()),
             "timestamp": now(),
@@ -107,7 +177,6 @@ def main():
 
         # Gemini
         res_gemini = call_gemini(system, text)
-
         save_jsonl({
             "run_id": str(uuid.uuid4()),
             "timestamp": now(),
@@ -117,6 +186,32 @@ def main():
             "system": system,
             "prompt": text,
             **res_gemini
+        })
+
+        # DeepSeek
+        res_deepseek = call_deepseek(system, text)
+        save_jsonl({
+            "run_id": str(uuid.uuid4()),
+            "timestamp": now(),
+            "provider": "deepseek",
+            "model": "deepseek-reasoner",
+            "prompt_id": prompt_id,
+            "system": system,
+            "prompt": text,
+            **res_deepseek
+        })
+
+        # Claude
+        res_claude = call_claude(system, text)
+        save_jsonl({
+            "run_id": str(uuid.uuid4()),
+            "timestamp": now(),
+            "provider": "claude",
+            "model": "claude-sonnet-4-5",
+            "prompt_id": prompt_id,
+            "system": system,
+            "prompt": text,
+            **res_claude
         })
 
     print("Finalizado 🚀")
