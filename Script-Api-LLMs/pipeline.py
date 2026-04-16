@@ -14,6 +14,8 @@ PROVIDERS = [
     ("claude", CLAUDE_MODEL, call_claude),
 ]
 
+AVAILABLE_PROVIDERS = [provider_name for provider_name, _, _ in PROVIDERS]
+
 
 def build_record_base(entry, prompt_text):
     return {
@@ -28,15 +30,24 @@ def build_record_base(entry, prompt_text):
     }
 
 
-def run_all_providers_for_prompt(entry, output_file):
+def run_all_providers_for_prompt(entry, output_file, selected_providers=None, output_files_by_provider=None):
     system = entry.get("system", "")
     prompt_text = build_prompt(entry)
     record_base = build_record_base(entry, prompt_text)
 
+    selected = set(selected_providers or AVAILABLE_PROVIDERS)
+
     for provider_name, model_name, caller in PROVIDERS:
+        if provider_name not in selected:
+            continue
+
+        provider_output_file = output_file
+        if output_files_by_provider:
+            provider_output_file = output_files_by_provider.get(provider_name, output_file)
+
         result = caller(system, prompt_text)
         append_jsonl(
-            output_file,
+            provider_output_file,
             {
                 "run_id": str(uuid.uuid4()),
                 "timestamp": now_iso(),
