@@ -1,4 +1,14 @@
-PROMPT_VERSIONS = ["v2", "v4_few_shot"]
+PROMPT_VERSIONS = ["zero_shot", "few_shot"]
+
+PROMPT_VERSION_LABELS = {
+    "zero_shot": "Zero shot",
+    "few_shot": "Few shot",
+}
+
+PROMPT_VERSION_ALIASES = {
+    "v2": "zero_shot",
+    "v4_few_shot": "few_shot",
+}
 
 
 def normalize_type(value):
@@ -204,18 +214,19 @@ def build_prompt(entry):
     if not code:
         raise ValueError("A entrada precisa ter 'prompt' ou 'code'.")
 
-    prompt_version = normalize_type(entry.get("prompt_version", "v4_few_shot"))
+    prompt_version = normalize_type(entry.get("prompt_version", "few_shot"))
+    prompt_version = PROMPT_VERSION_ALIASES.get(prompt_version, prompt_version)
     snippet_type = normalize_type(entry.get("type"))
 
     if snippet_type == "class":
         builders = {
-            "v2": prompt_class_v2,
-            "v4_few_shot": prompt_class_few_shot,
+            "zero_shot": prompt_class_v2,
+            "few_shot": prompt_class_few_shot,
         }
     elif snippet_type == "function":
         builders = {
-            "v2": prompt_function_v2,
-            "v4_few_shot": prompt_function_few_shot,
+            "zero_shot": prompt_function_v2,
+            "few_shot": prompt_function_few_shot,
         }
     else:
         raise ValueError(f"Tipo de snippet inválido: {entry.get('type')!r}")

@@ -5,14 +5,21 @@ from google import genai
 
 MODEL_NAME = "gemini-2.5-flash"
 
-_client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+
+def _build_client():
+    api_key = os.getenv("GEMINI_API_KEY")
+    if not api_key:
+        raise RuntimeError("GEMINI_API_KEY não configurada.")
+
+    return genai.Client(api_key=api_key)
 
 
 def call_gemini(system, prompt):
     start = time.time()
     try:
+        client = _build_client()
         full_prompt = f"{system}\n\n{prompt}"
-        response = _client.models.generate_content(
+        response = client.models.generate_content(
             model=MODEL_NAME,
             contents=full_prompt,
         )

@@ -119,7 +119,7 @@ def prepare_base(source_file):
     return prepared.sort_values(["type", "sample_id"]).reset_index(drop=True)
 
 
-def build_entries(prepared, prompt_version, samples_per_smell=None, seed=42):
+def build_entries(prepared, samples_per_type=None, seed=42):
     records = []
 
     smell_map = {
@@ -129,31 +129,23 @@ def build_entries(prepared, prompt_version, samples_per_smell=None, seed=42):
 
     for snippet_type, smells in smell_map.items():
         subset = prepared[prepared["type"] == snippet_type].copy()
+        subset = subset.sort_values(["sample_id"]).drop_duplicates(subset=["sample_id"], keep="first")
 
-        for smell in smells:
-            smell_subset = subset[subset[smell].notna()].copy()
-            if samples_per_smell is not None:
-                positives = smell_subset[smell_subset[smell] == 1]
-                negatives = smell_subset[smell_subset[smell] == 0]
-                n_each = int(samples_per_smell)
-                pos_n = min(n_each, len(positives))
-                neg_n = min(n_each, len(negatives))
-                smell_subset = pd.concat(
-                    [
-                        positives.sample(n=pos_n, random_state=seed) if pos_n else positives.head(0),
-                        negatives.sample(n=neg_n, random_state=seed) if neg_n else negatives.head(0),
-                    ],
-                    ignore_index=True,
-                )
+        if samples_per_type is not None:
+            subset = subset.sample(
+                n=min(int(samples_per_type), len(subset)),
+                random_state=seed,
+            ).sort_values(["sample_id"])
 
-            for _, row in smell_subset.iterrows():
-                code = fetch_code_snippet(row)
+        for _, row in subset.iterrows():
+            code = fetch_code_snippet(row)
+            for prompt_version in PROMPT_VERSIONS:
                 records.append(
                     {
                         "sample_id": int(row["sample_id"]),
                         "type": row["type"],
-                        "target_smell": smell,
-                        "target_label": int(row[smell]),
+                        "target_smell": ", ".join(smells),
+                        "target_labels": {smell: int(row[smell]) for smell in smells},
                         "prompt_version": prompt_version,
                         "system": "Responda de forma objetiva",
                         "code": code,
@@ -175,9 +167,8 @@ def main():
     parser = argparse.ArgumentParser(description="Gera prompts.json a partir da base MLCQ sample por sample.")
     parser.add_argument("--source", default=str(DEFAULT_SOURCE_FILE), help="Caminho para o XLSX de origem")
     parser.add_argument("--output", default=str(DEFAULT_OUTPUT_FILE), help="Caminho para o prompts.json de saída")
-    parser.add_argument("--prompt-version", default="v4_few_shot", choices=PROMPT_VERSIONS, help="Versão do prompt")
     parser.add_argument("--sample-id", type=int, default=None, help="Gera prompts apenas para um sample_id específico")
-    parser.add_argument("--samples-per-smell", type=int, default=None, help="Amostras positivas e negativas por smell")
+    parser.add_argument("--samples-per-type", type=int, default=None, help="Amostras por tipo de entidade")
     parser.add_argument("--seed", type=int, default=42, help="Seed para amostragem")
     args = parser.parse_args()
 
@@ -188,7 +179,7 @@ def main():
         if prepared.empty:
             raise SystemExit(f"sample_id {args.sample_id} não encontrado na base.")
 
-    entries = build_entries(prepared, args.prompt_version, samples_per_smell=args.samples_per_smell, seed=args.seed)
+    entries = build_entries(prepared, samples_per_type=args.samples_per_type, seed=args.seed)
 
     for index, entry in enumerate(entries, start=1):
         entry["id"] = index

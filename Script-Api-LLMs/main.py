@@ -1,11 +1,12 @@
 from pathlib import Path
 
 from dotenv import load_dotenv
-from io_helpers import load_json
-from pipeline import run_all_providers_for_prompt
 
 # carregar .env
 load_dotenv()
+
+from io_helpers import load_json
+from pipeline import run_all_providers_for_prompt
 
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT_FILE = BASE_DIR / "outputs.jsonl"

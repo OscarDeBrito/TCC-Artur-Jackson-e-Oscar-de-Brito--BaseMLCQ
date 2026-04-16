@@ -5,16 +5,23 @@ from openai import OpenAI
 
 MODEL_NAME = "deepseek-reasoner"
 
-_client = OpenAI(
-    api_key=os.getenv("DEEPSEEK_API_KEY"),
-    base_url="https://api.deepseek.com",
-)
+
+def _build_client():
+    api_key = os.getenv("DEEPSEEK_API_KEY")
+    if not api_key:
+        raise RuntimeError("DEEPSEEK_API_KEY não configurada.")
+
+    return OpenAI(
+        api_key=api_key,
+        base_url="https://api.deepseek.com",
+    )
 
 
 def call_deepseek(system, prompt):
     start = time.time()
     try:
-        response = _client.chat.completions.create(
+        client = _build_client()
+        response = client.chat.completions.create(
             model=MODEL_NAME,
             messages=[
                 {"role": "system", "content": system},

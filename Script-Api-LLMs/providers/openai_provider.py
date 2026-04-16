@@ -5,13 +5,20 @@ from openai import OpenAI
 
 MODEL_NAME = "gpt-5.4-mini"
 
-_client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+def _build_client():
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        raise RuntimeError("OPENAI_API_KEY não configurada.")
+
+    return OpenAI(api_key=api_key)
 
 
 def call_openai(system, prompt):
     start = time.time()
     try:
-        response = _client.responses.create(
+        client = _build_client()
+        response = client.responses.create(
             model=MODEL_NAME,
             instructions=system,
             input=prompt,

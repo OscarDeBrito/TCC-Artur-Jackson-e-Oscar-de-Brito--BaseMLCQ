@@ -5,13 +5,20 @@ from anthropic import Anthropic
 
 MODEL_NAME = "claude-sonnet-4-5"
 
-_client = Anthropic(api_key=os.getenv("ANTHROPIC_API_KEY"))
+
+def _build_client():
+    api_key = os.getenv("ANTHROPIC_API_KEY")
+    if not api_key:
+        raise RuntimeError("ANTHROPIC_API_KEY não configurada.")
+
+    return Anthropic(api_key=api_key)
 
 
 def call_claude(system, prompt):
     start = time.time()
     try:
-        response = _client.messages.create(
+        client = _build_client()
+        response = client.messages.create(
             model=MODEL_NAME,
             max_tokens=200,
             system=system,
