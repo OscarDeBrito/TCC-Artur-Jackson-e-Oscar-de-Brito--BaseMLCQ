@@ -39,6 +39,11 @@ def parse_args():
     help="Limita a quantidade de prompts processados.",
     )
     parser.add_argument(
+    "--only-ids",
+    default=None,
+    help="Lista de IDs específicos separados por vírgula. Ex.: 2467,3020,4328",
+    )
+    parser.add_argument(
         "--no-resume",
         action="store_true",
         help="Não pula prompts já processados.",
@@ -103,8 +108,14 @@ def main():
     args = parse_args()
 
     prompts = load_json(PROMPTS_FILE)
+
     if args.limit is not None:
         prompts = prompts[:args.limit]
+
+    if args.only_ids:
+        only_ids = {int(x.strip()) for x in args.only_ids.split(",") if x.strip()}
+        prompts = [p for p in prompts if int(p["id"]) in only_ids]
+
     selected_providers = [value.strip().lower() for value in args.providers.split(",") if value.strip()]
 
     invalid = [provider for provider in selected_providers if provider not in AVAILABLE_PROVIDERS]

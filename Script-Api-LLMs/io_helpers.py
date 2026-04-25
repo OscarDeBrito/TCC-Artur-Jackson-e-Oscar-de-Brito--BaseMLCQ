@@ -1,5 +1,9 @@
 import json
 from datetime import datetime, timezone
+from threading import Lock
+
+
+_jsonl_write_lock = Lock()
 
 
 def now_iso():
@@ -12,5 +16,7 @@ def load_json(file_path):
 
 
 def append_jsonl(file_path, data):
-    with open(file_path, "a", encoding="utf-8") as file_obj:
-        file_obj.write(json.dumps(data, ensure_ascii=False) + "\n")
+    with _jsonl_write_lock:
+        with open(file_path, "a", encoding="utf-8") as file_obj:
+            file_obj.write(json.dumps(data, ensure_ascii=False) + "\n")
+            file_obj.flush()
