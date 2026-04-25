@@ -1,10 +1,6 @@
 # chaves
 .env
 
-# outputs de LLM
-*.jsonl
-*.csv
-
 # python
 __pycache__/
 *.pyc
