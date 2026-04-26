@@ -1,44 +1,40 @@
 import json
 from collections import Counter
 
-FILE = "outputs_deepseek.jsonl"
+FILE = "outputs_openai.jsonl"
 EXPECTED_TOTAL = 8728
 
 
-def check_file():
-    total_lines = 0
-    valid_json = 0
-    invalid_json = 0
-    status_count = Counter()
-    missing_status = 0
-    prompt_ids = []
+def read_file():
+    valid_items = []
     valid_lines = []
+    invalid_lines = []
 
     with open(FILE, "r", encoding="utf-8") as f:
         for line_number, line in enumerate(f, start=1):
-            total_lines += 1
             original_line = line.rstrip("\n")
-            line = line.strip()
+            stripped = line.strip()
 
-            if not line:
+            if not stripped:
                 continue
 
             try:
-                item = json.loads(line)
-                valid_json += 1
+                item = json.loads(stripped)
+                valid_items.append(item)
                 valid_lines.append(original_line)
             except Exception:
-                invalid_json += 1
-                print(f"JSON inválido na linha {line_number}")
-                continue
+                invalid_lines.append(line_number)
 
-            if "status" not in item:
-                missing_status += 1
-                print(f"Sem status na linha {line_number}, prompt_id={item.get('prompt_id')}")
-            else:
-                status_count[item["status"]] += 1
+    return valid_items, valid_lines, invalid_lines
 
-            prompt_ids.append(item.get("prompt_id"))
+
+def print_report(valid_items, invalid_lines):
+    status_count = Counter()
+    prompt_ids = []
+
+    for item in valid_items:
+        status_count[item.get("status", "SEM_STATUS")] += 1
+        prompt_ids.append(item.get("prompt_id"))
 
     expected = set(range(1, EXPECTED_TOTAL + 1))
     found = set(x for x in prompt_ids if isinstance(x, int))
@@ -48,11 +44,10 @@ def check_file():
 
     print("\n=== RELATÓRIO ===")
     print("Arquivo:", FILE)
-    print("Total de linhas:", total_lines)
-    print("JSONs válidos:", valid_json)
-    print("JSONs inválidos:", invalid_json)
+    print("Total de linhas:", len(valid_items) + len(invalid_lines))
+    print("JSONs válidos:", len(valid_items))
+    print("JSONs inválidos:", len(invalid_lines))
     print("Status:", dict(status_count))
-    print("Sem status:", missing_status)
     print("Prompt IDs únicos:", len(set(prompt_ids)))
     print("Total prompt_ids:", len(prompt_ids))
 
@@ -62,7 +57,13 @@ def check_file():
     print("\nDuplicados:", len(duplicated))
     print(duplicated[:50])
 
-    return invalid_json, valid_lines
+    errors = [item for item in valid_items if item.get("status") == "error"]
+
+    print("\nErros:", len(errors))
+    for item in errors[:50]:
+        print(item.get("prompt_id"), item.get("error"))
+
+    return missing, duplicated, errors
 
 
 def remove_invalid_lines(valid_lines):
@@ -70,23 +71,73 @@ def remove_invalid_lines(valid_lines):
         for line in valid_lines:
             f.write(line + "\n")
 
-    print("\nLinhas inválidas removidas.")
+    print("\n✅ Linhas inválidas removidas.")
     print("Linhas restantes:", len(valid_lines))
 
 
+def clean_duplicates_keep_success(valid_items):
+    best_by_prompt = {}
+
+    for item in valid_items:
+        pid = item.get("prompt_id")
+
+        if pid is None:
+            continue
+
+        if pid not in best_by_prompt:
+            best_by_prompt[pid] = item
+            continue
+
+        current = best_by_prompt[pid]
+
+        # prioridade 1: manter success
+        if current.get("status") != "success" and item.get("status") == "success":
+            best_by_prompt[pid] = item
+
+        # se ambos são success, mantém o último
+        elif current.get("status") == "success" and item.get("status") == "success":
+            best_by_prompt[pid] = item
+
+        # se nenhum é success, mantém o último
+        elif current.get("status") != "success" and item.get("status") != "success":
+            best_by_prompt[pid] = item
+
+    ordered_items = [best_by_prompt[pid] for pid in sorted(best_by_prompt)]
+
+    with open(FILE, "w", encoding="utf-8") as f:
+        for item in ordered_items:
+            f.write(json.dumps(item, ensure_ascii=False) + "\n")
+
+    print("\n✅ Duplicados removidos.")
+    print("Linhas restantes:", len(ordered_items))
+
+
+def ask_yes_no(question):
+    answer = input(question + " (s/n): ").strip().lower()
+    return answer in {"s", "sim", "y", "yes"}
+
+
 def main():
-    invalid_count, valid_lines = check_file()
+    valid_items, valid_lines, invalid_lines = read_file()
+    missing, duplicated, errors = print_report(valid_items, invalid_lines)
 
-    if invalid_count == 0:
-        print("\n✅ Nenhuma linha inválida encontrada.")
-        return
+    if invalid_lines:
+        print("\nLinhas inválidas encontradas:", invalid_lines[:50])
+        if ask_yes_no(f"Deseja remover {len(invalid_lines)} linhas inválidas?"):
+            remove_invalid_lines(valid_lines)
+            valid_items, valid_lines, invalid_lines = read_file()
+            missing, duplicated, errors = print_report(valid_items, invalid_lines)
 
-    answer = input(f"\nForam encontradas {invalid_count} linhas inválidas. Deseja removê-las? (s/n): ")
+    if duplicated:
+        if ask_yes_no(
+            f"Deseja remover {len(duplicated)} duplicados mantendo success quando existir?"
+        ):
+            clean_duplicates_keep_success(valid_items)
+            valid_items, valid_lines, invalid_lines = read_file()
+            print_report(valid_items, invalid_lines)
 
-    if answer.strip().lower() in {"s", "sim", "y", "yes"}:
-        remove_invalid_lines(valid_lines)
-    else:
-        print("Nenhuma alteração feita.")
+    if not invalid_lines and not duplicated and not missing and not errors:
+        print("\n✅ Arquivo perfeito: sem inválidos, sem duplicados, sem faltantes e sem erros.")
 
 
 if __name__ == "__main__":

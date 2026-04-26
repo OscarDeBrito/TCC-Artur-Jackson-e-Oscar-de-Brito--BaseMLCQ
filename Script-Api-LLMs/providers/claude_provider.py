@@ -21,6 +21,7 @@ def call_claude(system, prompt):
         response = client.messages.create(
             model=MODEL_NAME,
             max_tokens=200,
+            temperature=0,
             system=system,
             messages=[{"role": "user", "content": prompt}],
         )

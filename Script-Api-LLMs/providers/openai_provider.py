@@ -22,6 +22,7 @@ def call_openai(system, prompt):
             model=MODEL_NAME,
             instructions=system,
             input=prompt,
+            temperature=0,
         )
 
         return {
