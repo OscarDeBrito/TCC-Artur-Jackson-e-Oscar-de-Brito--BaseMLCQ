@@ -3,7 +3,7 @@ import time
 
 from anthropic import Anthropic
 
-MODEL_NAME = "claude-sonnet-4-5"
+MODEL_NAME = "claude-haiku-4-5"
 
 
 def _build_client():
