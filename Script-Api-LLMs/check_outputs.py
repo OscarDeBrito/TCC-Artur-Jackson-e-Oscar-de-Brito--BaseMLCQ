@@ -1,7 +1,7 @@
 import json
 from collections import Counter
 
-FILE = "outputs_openai.jsonl"
+FILE = "outputs_claude.jsonl"
 EXPECTED_TOTAL = 8728
 
 
