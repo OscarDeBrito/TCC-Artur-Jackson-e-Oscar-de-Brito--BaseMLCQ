@@ -1,0 +1,10 @@
+target/
+*.jar
+*.class
+
+.idea/
+.vscode/
+
+.DS_Store
+
+pom.xml.save

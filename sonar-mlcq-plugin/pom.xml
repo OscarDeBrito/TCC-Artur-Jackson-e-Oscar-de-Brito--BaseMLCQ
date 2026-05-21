@@ -1,0 +1,61 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>br.unb.mlcq</groupId>
+  <artifactId>sonar-mlcq-plugin</artifactId>
+  <version>0.0.4</version>
+  <packaging>sonar-plugin</packaging>
+
+  <name>MLCQ Plugin</name>
+  <description>Custom SonarQube plugin for MLCQ-related code smells</description>
+
+  <properties>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <sonar.plugin.api.version>10.7.0.2191</sonar.plugin.api.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.sonarsource.api.plugin</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>${sonar.plugin.api.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.sonarsource.java</groupId>
+      <artifactId>java-frontend</artifactId>
+      <version>8.0.1.36337</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.sonarsource.sonar-packaging-maven-plugin</groupId>
+        <artifactId>sonar-packaging-maven-plugin</artifactId>
+        <version>1.23.0.740</version>
+        <extensions>true</extensions>
+        <configuration>
+          <pluginKey>customcodesmells</pluginKey>
+          <pluginClass>br.unb.mlcq.MlcqPlugin</pluginClass>
+          <pluginName>Custom Code Smells Plugin</pluginName>
+          <pluginDescription>Custom plugin for code smell experiments</pluginDescription>
+          <requiredForLanguages>java</requiredForLanguages>
+        </configuration>
+      </plugin>
+
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.11.0</version>
+      </plugin>
+    </plugins>
+  </build>
+
+</project>
