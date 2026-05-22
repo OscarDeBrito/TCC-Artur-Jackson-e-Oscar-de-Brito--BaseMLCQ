@@ -1,0 +1,45 @@
+public interface Element extends NamedElement
+{
+  /**
+   * Returns the value of the '<em><b>References</b></em>' reference.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>References</em>' reference isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>References</em>' reference.
+   * @see #setReferences(Element)
+   * @see org.eclipse.xtext.builder.tests.builderTestLanguage.BuilderTestLanguagePackage#getElement_References()
+   * @model
+   * @generated
+   */
+  Element getReferences();
+
+  /**
+   * Sets the value of the '{@link org.eclipse.xtext.builder.tests.builderTestLanguage.Element#getReferences <em>References</em>}' reference.
+   * <!-- begin-user-doc -->
+   * <!-- end-user-doc -->
+   * @param value the new value of the '<em>References</em>' reference.
+   * @see #getReferences()
+   * @generated
+   */
+  void setReferences(Element value);
+
+  /**
+   * Returns the value of the '<em><b>Other Refs</b></em>' reference list.
+   * The list contents are of type {@link org.eclipse.xtext.builder.tests.builderTestLanguage.Element}.
+   * <!-- begin-user-doc -->
+   * <p>
+   * If the meaning of the '<em>Other Refs</em>' reference list isn't clear,
+   * there really should be more of a description here...
+   * </p>
+   * <!-- end-user-doc -->
+   * @return the value of the '<em>Other Refs</em>' reference list.
+   * @see org.eclipse.xtext.builder.tests.builderTestLanguage.BuilderTestLanguagePackage#getElement_OtherRefs()
+   * @model
+   * @generated
+   */
+  EList<Element> getOtherRefs();
+
+} // Element

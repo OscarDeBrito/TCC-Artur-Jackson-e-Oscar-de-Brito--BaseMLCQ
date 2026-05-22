@@ -1,0 +1,159 @@
+public class RestLiServiceException extends RuntimeException
+{
+  private static final long serialVersionUID = 1L;
+
+  private final HttpStatus    _status;
+  private Integer             _serviceErrorCode;
+  private DataMap             _errorDetails;
+  private ErrorResponseFormat _errorResponseFormat;
+
+  public RestLiServiceException(final HttpStatus status)
+  {
+    this(status, null, null);
+  }
+
+  public RestLiServiceException(final HttpStatus status, final String message)
+  {
+    this(status, message, null);
+  }
+
+  public RestLiServiceException(final HttpStatus status,
+                                final Throwable cause)
+  {
+    super(cause);
+    _status = status;
+  }
+
+  public RestLiServiceException(final HttpStatus status,
+                                final String message,
+                                final Throwable cause)
+  {
+    super(message, cause);
+    _status = status;
+  }
+
+  /**
+   * Construct a new instance using the specified HTTP status, exception message, cause, and an option to disable
+   * stacktrace. Consider setting {@code writableStackTrace} to {@code false} to conserve computation cost if the
+   * stacktrace does not contribute meaningful insights.
+   *
+   * @param status the HTTP status to use along with the exception
+   * @param message the exception message for this exception.
+   * @param cause the cause of this exception.
+   * @param writableStackTrace the exception stacktrace is filled in if true; false otherwise.
+   */
+  public RestLiServiceException(final HttpStatus status,
+      final String message, final Throwable cause, boolean writableStackTrace)
+  {
+    super(message, cause, true, writableStackTrace);
+    _status = status;
+  }
+
+  public HttpStatus getStatus()
+  {
+    return _status;
+  }
+
+  public RestLiServiceException setServiceErrorCode(final Integer serviceErrorCode)
+  {
+    _serviceErrorCode = serviceErrorCode;
+    return this;
+  }
+
+  public boolean hasServiceErrorCode()
+  {
+    return _serviceErrorCode != null;
+  }
+
+  public Integer getServiceErrorCode()
+  {
+    return _serviceErrorCode;
+  }
+
+  public DataMap getErrorDetails()
+  {
+    return _errorDetails;
+  }
+
+  public boolean hasErrorDetails()
+  {
+    return _errorDetails != null;
+  }
+
+  public RestLiServiceException setErrorDetails(final DataMap errorDetails)
+  {
+    _errorDetails = errorDetails;
+    return this;
+  }
+
+  @Override
+  public String toString()
+  {
+    StringBuilder sb = new StringBuilder();
+    sb.append(getClass().getName());
+    sb.append(" [HTTP Status:").append(_status.getCode());
+    if (_serviceErrorCode != null)
+    {
+      sb.append(", serviceErrorCode:").append(_serviceErrorCode);
+    }
+    sb.append("]");
+    String message = getLocalizedMessage();
+    if (message != null)
+    {
+      sb.append(": ").append(message);
+    }
+    return sb.toString();
+  }
+
+  /**
+   * Sets an error response format that will be used instead of the default server wide
+   * error response format.
+   *
+   * @param errorResponseFormat the overriding ErrorResponseFormat this service exception should be built with.
+   */
+  public void setOverridingFormat(ErrorResponseFormat errorResponseFormat)
+  {
+    _errorResponseFormat = errorResponseFormat;
+  }
+
+  /**
+   * Returns whether this exception has an overriding error format.
+   *
+   * @return true if this exception has an overriding error response format set.
+   */
+  public boolean hasOverridingErrorResponseFormat()
+  {
+    return _errorResponseFormat != null;
+  }
+
+  public ErrorResponseFormat getOverridingFormat()
+  {
+    return _errorResponseFormat;
+  }
+
+  public static RestLiServiceException fromThrowable(Throwable throwable)
+  {
+    RestLiServiceException restLiServiceException;
+    if (throwable instanceof RestLiServiceException)
+    {
+      restLiServiceException = (RestLiServiceException) throwable;
+    }
+    else if (throwable instanceof RoutingException)
+    {
+      RoutingException routingException = (RoutingException) throwable;
+
+      restLiServiceException = new RestLiServiceException(HttpStatus.fromCode(routingException.getStatus()),
+          routingException.getMessage(),
+          routingException);
+    }
+    else
+    {
+      restLiServiceException = new RestLiServiceException(HttpStatus.S_500_INTERNAL_SERVER_ERROR,
+          throwable.getMessage(),
+          throwable);
+    }
+
+    return restLiServiceException;
+  }
+
+}

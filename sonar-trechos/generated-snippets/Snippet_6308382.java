@@ -1,0 +1,59 @@
+public interface DevicePackageDownloadOperation {
+
+    /**
+     * Get the download package identifier
+     *
+     * @return
+     */
+    KapuaId getId();
+
+    /**
+     * Set the download package identifier
+     *
+     * @param id
+     */
+    void setId(KapuaId id);
+
+    /**
+     * Get the package size
+     *
+     * @return
+     */
+    Integer getSize();
+
+    /**
+     * Set the package size
+     *
+     * @param downloadSize
+     */
+    void setSize(Integer downloadSize);
+
+    /**
+     * Get the download progress
+     *
+     * @return
+     */
+    Integer getProgress();
+
+    /**
+     * Set the download progress
+     *
+     * @param downloadProgress
+     */
+    void setProgress(Integer downloadProgress);
+
+    /**
+     * Get the download status
+     *
+     * @return
+     */
+    DevicePackageDownloadStatus getStatus();
+
+    /**
+     * Set the download status
+     *
+     * @param status
+     */
+    void setStatus(DevicePackageDownloadStatus status);
+
+}

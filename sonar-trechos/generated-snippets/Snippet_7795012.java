@@ -1,0 +1,83 @@
+public class GuiceComponentInjector extends org.apache.wicket.injection.Injector
+	implements
+		IComponentInstantiationListener,
+		IBehaviorInstantiationListener
+{
+	private final IFieldValueFactory fieldValueFactory;
+
+	/**
+	 * Creates a new Wicket GuiceComponentInjector instance.
+	 * <p>
+	 * Internally this will create a new Guice {@link Injector} instance, with no {@link Module}
+	 * instances. This is only useful if your beans have appropriate {@link ImplementedBy}
+	 * annotations on them so that they can be automatically picked up with no extra configuration
+	 * code.
+	 * 
+	 * @param app
+	 */
+	public GuiceComponentInjector(final Application app)
+	{
+		this(app, new Module[0]);
+	}
+
+	/**
+	 * Creates a new Wicket GuiceComponentInjector instance, using the supplied Guice {@link Module}
+	 * instances to create a new Guice {@link Injector} instance internally.
+	 * 
+	 * @param app
+	 * @param modules
+	 */
+	public GuiceComponentInjector(final Application app, final Module... modules)
+	{
+		this(app, Guice.createInjector(app.usesDeploymentConfig() ? Stage.PRODUCTION
+			: Stage.DEVELOPMENT, modules), true);
+	}
+
+	/**
+	 * Constructor
+	 * 
+	 * @param app
+	 * @param injector
+	 */
+	public GuiceComponentInjector(final Application app, final Injector injector)
+	{
+		this(app, injector, true);
+	}
+
+	/**
+	 * Creates a new Wicket GuiceComponentInjector instance, using the provided Guice
+	 * {@link Injector} instance.
+	 * 
+	 * @param app
+	 * @param injector
+	 * @param wrapInProxies
+	 *            whether or not wicket should wrap dependencies with specialized proxies that can
+	 *            be safely serialized. in most cases this should be set to true.
+	 */
+	public GuiceComponentInjector(final Application app, final Injector injector,
+		final boolean wrapInProxies)
+	{
+		app.setMetaData(GuiceInjectorHolder.INJECTOR_KEY, new GuiceInjectorHolder(injector));
+		fieldValueFactory = new GuiceFieldValueFactory(wrapInProxies);
+		app.getBehaviorInstantiationListeners().add(this);
+		bind(app);
+	}
+
+	@Override
+	public void inject(final Object object)
+	{
+		inject(object, fieldValueFactory);
+	}
+
+	@Override
+	public void onInstantiation(final Component component)
+	{
+		inject(component);
+	}
+
+	@Override
+	public void onInstantiation(Behavior behavior)
+	{
+		inject(behavior);
+	}
+}

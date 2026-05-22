@@ -1,0 +1,40 @@
+public abstract class NewSubTool implements Tool {
+
+    private File directory;
+    
+    public void setDirectory(File directory) {
+        this.directory = directory;
+    }
+    
+    public File getDirectory() {
+        return this.directory;
+    }
+    
+    void mkBaseDir(File cwd) throws IOException {
+        if (directory != null) {
+            File actualDir = FileUtil.applyCwd(cwd, directory);
+            if (actualDir.exists() && !actualDir.isDirectory()) {
+                throw new IOException(Messages.msg("path.exists.and.not.dir", directory));
+            } else if (!actualDir.exists()) {
+                if (!FileUtil.mkdirs(actualDir)) {
+                    throw new IOException(Messages.msg("could.not.mkdir", directory));
+                }
+            }
+        }
+    }
+    
+    public abstract List<Variable> getVariables();
+    
+    public abstract List<Copy> getResources(Environment env);
+    
+    @Override
+    public void initialize(CeylonTool mainTool) {
+    }
+    
+    @Override
+    public final void run() throws Exception {
+        // Projects are never run as tools
+        throw new RuntimeException();
+    }
+    
+}

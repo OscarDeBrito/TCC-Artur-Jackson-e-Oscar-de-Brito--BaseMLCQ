@@ -20,7 +20,6 @@ public class MlcqCheckRegistrar implements CheckRegistrar {
 
     public static List<Class<? extends JavaCheck>> checkClasses() {
         return Arrays.asList(
-                LongMethodCheck.class,
                 LongMethodStatisticalCheck.class,
                 DataClassCheck.class,
                 FeatureEnvyCheck.class,

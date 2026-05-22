@@ -1,0 +1,17 @@
+public class Snippet__5180986 {
+
+    public Snippet__5180986(java.io.Reader dstream,
+                     int startline, int startcolumn, int buffersize)
+      {
+        inputStream = dstream;
+        line = startline;
+        column = startcolumn - 1;
+
+        available = bufsize = buffersize;
+        buffer = new char[buffersize];
+        bufline = new int[buffersize];
+        bufcolumn = new int[buffersize];
+        nextCharBuf = new char[4096];
+      }
+
+}
