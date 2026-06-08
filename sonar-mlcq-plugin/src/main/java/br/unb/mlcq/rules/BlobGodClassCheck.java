@@ -218,20 +218,6 @@ public class BlobGodClassCheck extends IssuableSubscriptionVisitor {
         private int foreignDataAccesses = 0;
 
         @Override
-        public void visitMemberSelectExpression(MemberSelectExpressionTree tree) {
-            String receiverName = tree.expression().toString();
-
-            if (!"this".equals(receiverName)
-                    && !"super".equals(receiverName)
-                    && !receiverName.isBlank()
-                    && !looksLikeStaticAccess(receiverName)) {
-                foreignDataAccesses++;
-            }
-
-            super.visitMemberSelectExpression(tree);
-        }
-
-        @Override
         public void visitMethodInvocation(MethodInvocationTree tree) {
             if (tree.methodSelect().is(Tree.Kind.MEMBER_SELECT)) {
                 MemberSelectExpressionTree memberSelect =
@@ -240,16 +226,20 @@ public class BlobGodClassCheck extends IssuableSubscriptionVisitor {
                 String methodName = memberSelect.identifier().name();
                 String receiverName = memberSelect.expression().toString();
 
-                if ((methodName.startsWith("get") || methodName.startsWith("is"))
-                        && !"this".equals(receiverName)
-                        && !"super".equals(receiverName)
-                        && !receiverName.isBlank()
-                        && !looksLikeStaticAccess(receiverName)) {
+                if (isForeignAccessor(methodName, receiverName)) {
                     foreignDataAccesses++;
                 }
             }
 
             super.visitMethodInvocation(tree);
+        }
+
+        private boolean isForeignAccessor(String methodName, String receiverName) {
+            return (methodName.startsWith("get") || methodName.startsWith("is"))
+                    && !"this".equals(receiverName)
+                    && !"super".equals(receiverName)
+                    && !receiverName.isBlank()
+                    && !looksLikeStaticAccess(receiverName);
         }
 
         private boolean looksLikeStaticAccess(String receiverName) {

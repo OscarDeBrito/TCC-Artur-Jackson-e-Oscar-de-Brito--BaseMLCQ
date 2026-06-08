@@ -8,7 +8,7 @@ public class MlcqRulesDefinition implements RulesDefinition {
     public static final String REPOSITORY_KEY = "custom-java-smells";
     public static final String REPOSITORY_NAME = "Custom Java Code Smell Rules";
 
-    public static final String LONG_METHOD_STATISTICAL_RULE_KEY = "long-method-statistical";
+    public static final String LONG_METHOD_RULE_KEY = "long-method";
     public static final String DATA_CLASS_RULE_KEY = "data-class";
     public static final String FEATURE_ENVY_RULE_KEY = "feature-envy";
     public static final String BLOB_GOD_CLASS_RULE_KEY = "blob-god-class";
@@ -19,9 +19,9 @@ public class MlcqRulesDefinition implements RulesDefinition {
                 .createRepository(REPOSITORY_KEY, "java")
                 .setName(REPOSITORY_NAME);
 
-        repository.createRule(LONG_METHOD_STATISTICAL_RULE_KEY)
-                .setName("Long Method Statistical")
-                .setHtmlDescription("Detects long methods using a statistical heuristic inspired by Ptidej/PADL boxplot logic.")
+        repository.createRule(LONG_METHOD_RULE_KEY)
+                .setName("Long Method")
+                .setHtmlDescription("Detects Long Method using LOC >= 80 and CYCLO >= 8.")
                 .setStatus(RuleStatus.READY)
                 .setSeverity("MAJOR");
 

@@ -1,14 +1,34 @@
 package br.unb.mlcq.rules;
 
+import org.sonar.plugins.java.api.tree.BaseTreeVisitor;
+import org.sonar.plugins.java.api.tree.CaseLabelTree;
 import org.sonar.plugins.java.api.tree.ClassTree;
+import org.sonar.plugins.java.api.tree.ConditionalExpressionTree;
+import org.sonar.plugins.java.api.tree.DoWhileStatementTree;
+import org.sonar.plugins.java.api.tree.ForEachStatement;
+import org.sonar.plugins.java.api.tree.ForStatementTree;
+import org.sonar.plugins.java.api.tree.IfStatementTree;
 import org.sonar.plugins.java.api.tree.MethodTree;
 import org.sonar.plugins.java.api.tree.Modifier;
+import org.sonar.plugins.java.api.tree.ModifierKeywordTree;
+import org.sonar.plugins.java.api.tree.ModifiersTree;
 import org.sonar.plugins.java.api.tree.Tree;
 import org.sonar.plugins.java.api.tree.VariableTree;
+import org.sonar.plugins.java.api.tree.WhileStatementTree;
 
 public final class MetricsUtils {
 
     private MetricsUtils() {
+    }
+
+    private static boolean hasPublicModifier(ModifiersTree modifiersTree) {
+        for (ModifierKeywordTree modifierKeyword : modifiersTree.modifiers()) {
+            if (modifierKeyword.modifier() == Modifier.PUBLIC) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static int countPublicAttributes(ClassTree classTree) {
@@ -18,7 +38,7 @@ public final class MetricsUtils {
             if (member.is(Tree.Kind.VARIABLE)) {
                 VariableTree variable = (VariableTree) member;
 
-                if (variable.modifiers().modifiers().contains(Modifier.PUBLIC)) {
+                if (hasPublicModifier(variable.modifiers())) {
                     count++;
                 }
             }
@@ -34,7 +54,7 @@ public final class MetricsUtils {
             if (member.is(Tree.Kind.METHOD)) {
                 MethodTree method = (MethodTree) member;
 
-                if (method.modifiers().modifiers().contains(Modifier.PUBLIC)) {
+                if (hasPublicModifier(method.modifiers())) {
                     count++;
                 }
             }
@@ -50,7 +70,7 @@ public final class MetricsUtils {
             if (member.is(Tree.Kind.METHOD)) {
                 MethodTree method = (MethodTree) member;
 
-                if (method.modifiers().modifiers().contains(Modifier.PUBLIC)
+                if (hasPublicModifier(method.modifiers())
                         && isAccessor(method)) {
                     count++;
                 }
@@ -67,7 +87,7 @@ public final class MetricsUtils {
             if (member.is(Tree.Kind.METHOD)) {
                 MethodTree method = (MethodTree) member;
 
-                if (method.modifiers().modifiers().contains(Modifier.PUBLIC)
+                if (hasPublicModifier(method.modifiers())
                         && !isAccessor(method)
                         && !isConstructor(method)) {
                     count++;
@@ -95,6 +115,10 @@ public final class MetricsUtils {
     public static boolean isAccessor(MethodTree method) {
         String name = method.simpleName().name();
 
+        if (isConstructor(method)) {
+            return false;
+        }
+
         boolean accessorName =
                 name.startsWith("get")
                         || name.startsWith("set")
@@ -105,7 +129,7 @@ public final class MetricsUtils {
         }
 
         if (method.block() == null) {
-            return false;
+            return true;
         }
 
         int startLine = method.firstToken().line();
@@ -117,5 +141,75 @@ public final class MetricsUtils {
 
     public static boolean isConstructor(MethodTree method) {
         return method.is(Tree.Kind.CONSTRUCTOR);
+    }
+
+    public static int calculateWMC(ClassTree classTree) {
+        int wmc = 0;
+
+        for (Tree member : classTree.members()) {
+            if (member.is(Tree.Kind.METHOD, Tree.Kind.CONSTRUCTOR)) {
+                MethodTree method = (MethodTree) member;
+                wmc += calculateCyclomaticComplexity(method);
+            }
+        }
+
+        return wmc;
+    }
+
+    public static int calculateCyclomaticComplexity(MethodTree method) {
+        ComplexityVisitor visitor = new ComplexityVisitor();
+        method.accept(visitor);
+        return visitor.getComplexity();
+    }
+
+    private static class ComplexityVisitor extends BaseTreeVisitor {
+
+        private int complexity = 1;
+
+        @Override
+        public void visitIfStatement(IfStatementTree tree) {
+            complexity++;
+            super.visitIfStatement(tree);
+        }
+
+        @Override
+        public void visitForStatement(ForStatementTree tree) {
+            complexity++;
+            super.visitForStatement(tree);
+        }
+
+        @Override
+        public void visitForEachStatement(ForEachStatement tree) {
+            complexity++;
+            super.visitForEachStatement(tree);
+        }
+
+        @Override
+        public void visitWhileStatement(WhileStatementTree tree) {
+            complexity++;
+            super.visitWhileStatement(tree);
+        }
+
+        @Override
+        public void visitDoWhileStatement(DoWhileStatementTree tree) {
+            complexity++;
+            super.visitDoWhileStatement(tree);
+        }
+
+        @Override
+        public void visitCaseLabel(CaseLabelTree tree) {
+            complexity++;
+            super.visitCaseLabel(tree);
+        }
+
+        @Override
+        public void visitConditionalExpression(ConditionalExpressionTree tree) {
+            complexity++;
+            super.visitConditionalExpression(tree);
+        }
+
+        public int getComplexity() {
+            return complexity;
+        }
     }
 }

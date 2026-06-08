@@ -139,18 +139,8 @@ public class FeatureEnvyCheck extends IssuableSubscriptionVisitor {
             String selectedName = tree.identifier().name();
             String receiverName = tree.expression().toString();
 
-            if ("this".equals(receiverName)) {
-                if (classFields.contains(selectedName)) {
-                    localAttributeAccesses++;
-                }
-            } else if (!"super".equals(receiverName)
-                    && !receiverName.isBlank()
-                    && !looksLikeStaticAccess(receiverName)) {
-
-                if (!isAccessorLike(selectedName)) {
-                    foreignDataAccesses++;
-                    foreignDataProviders.add(receiverName);
-                }
+            if ("this".equals(receiverName) && classFields.contains(selectedName)) {
+                localAttributeAccesses++;
             }
 
             super.visitMemberSelectExpression(tree);
@@ -168,6 +158,7 @@ public class FeatureEnvyCheck extends IssuableSubscriptionVisitor {
                 if (isGetterLike(methodName)
                         && !"this".equals(receiverName)
                         && !"super".equals(receiverName)
+                        && !receiverName.isBlank()
                         && !looksLikeStaticAccess(receiverName)) {
 
                     foreignDataAccesses++;
@@ -180,12 +171,6 @@ public class FeatureEnvyCheck extends IssuableSubscriptionVisitor {
 
         private boolean isGetterLike(String methodName) {
             return methodName.startsWith("get") || methodName.startsWith("is");
-        }
-
-        private boolean isAccessorLike(String name) {
-            return name.startsWith("get")
-                    || name.startsWith("set")
-                    || name.startsWith("is");
         }
 
         private boolean looksLikeStaticAccess(String receiverName) {
