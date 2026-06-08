@@ -199,6 +199,7 @@
 {"sample_id": 3952888, "snippet": "Snippet_3952888.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 1, "severity": "MAJOR"}
 {"sample_id": 4008191, "snippet": "Snippet_4008191.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 1, "severity": "MAJOR"}
 {"sample_id": 4040842, "snippet": "Snippet_4040842.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 19, "severity": "MAJOR"}
+{"sample_id": 4070938, "snippet": "Snippet_4070938.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 1354, "severity": "MAJOR"}
 {"sample_id": 4108183, "snippet": "Snippet_4108183.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 1, "severity": "MAJOR"}
 {"sample_id": 4221494, "snippet": "Snippet_4221494.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 1, "severity": "MAJOR"}
 {"sample_id": 4246628, "snippet": "Snippet_4246628.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 1, "severity": "MAJOR"}
@@ -212,6 +213,7 @@
 {"sample_id": 4435545, "snippet": "Snippet_4435545.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 12, "severity": "MAJOR"}
 {"sample_id": 4451710, "snippet": "Snippet_4451710.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 1, "severity": "MAJOR"}
 {"sample_id": 4458068, "snippet": "Snippet_4458068.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 1, "severity": "MAJOR"}
+{"sample_id": 4466087, "snippet": "Snippet_4466087.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 492, "severity": "MAJOR"}
 {"sample_id": 4468635, "snippet": "Snippet_4468635.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 1, "severity": "MAJOR"}
 {"sample_id": 4478155, "snippet": "Snippet_4478155.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 2, "severity": "MAJOR"}
 {"sample_id": 4499277, "snippet": "Snippet_4499277.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 1, "severity": "MAJOR"}
@@ -223,6 +225,7 @@
 {"sample_id": 4611132, "snippet": "Snippet_4611132.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 4, "severity": "MAJOR"}
 {"sample_id": 4612586, "snippet": "Snippet_4612586.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 1, "severity": "MAJOR"}
 {"sample_id": 4616465, "snippet": "Snippet_4616465.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 1, "severity": "MAJOR"}
+{"sample_id": 4665122, "snippet": "Snippet_4665122.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 96, "severity": "MAJOR"}
 {"sample_id": 4671511, "snippet": "Snippet_4671511.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 4, "severity": "MAJOR"}
 {"sample_id": 4686917, "snippet": "Snippet_4686917.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 3, "severity": "MAJOR"}
 {"sample_id": 4752038, "snippet": "Snippet_4752038.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 1, "severity": "MAJOR"}
@@ -245,6 +248,7 @@
 {"sample_id": 5343744, "snippet": "Snippet_5343744.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 1, "severity": "MAJOR"}
 {"sample_id": 5354848, "snippet": "Snippet_5354848.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 3, "severity": "MAJOR"}
 {"sample_id": 5370715, "snippet": "Snippet_5370715.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 1, "severity": "MAJOR"}
+{"sample_id": 5414165, "snippet": "Snippet_5414165.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 4, "severity": "MAJOR"}
 {"sample_id": 5414612, "snippet": "Snippet_5414612.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 12, "severity": "MAJOR"}
 {"sample_id": 5447313, "snippet": "Snippet_5447313.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 1, "severity": "MAJOR"}
 {"sample_id": 5491608, "snippet": "Snippet_5491608.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 1, "severity": "MAJOR"}
@@ -411,6 +415,7 @@
 {"sample_id": 9141639, "snippet": "Snippet_9141639.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 1, "severity": "MAJOR"}
 {"sample_id": 9176003, "snippet": "Snippet_9176003.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 1, "severity": "MAJOR"}
 {"sample_id": 9251392, "snippet": "Snippet_9251392.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 631, "severity": "MAJOR"}
+{"sample_id": 9251392, "snippet": "Snippet_9251392.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 1248, "severity": "MAJOR"}
 {"sample_id": 9348514, "snippet": "Snippet_9348514.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 708, "severity": "MAJOR"}
 {"sample_id": 9348514, "snippet": "Snippet_9348514.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 729, "severity": "MAJOR"}
 {"sample_id": 9348514, "snippet": "Snippet_9348514.java", "detected_rule": "custom-java-smells:data-class", "detected_smell": "data-class", "line": 819, "severity": "MAJOR"}

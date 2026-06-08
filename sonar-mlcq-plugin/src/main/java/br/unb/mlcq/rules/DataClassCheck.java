@@ -52,8 +52,12 @@ public class DataClassCheck extends IssuableSubscriptionVisitor {
                 && (moderateDataExposureWithLowComplexity
                 || highDataExposureWithModerateComplexity)) {
 
+            Tree issueLocation = classTree.simpleName() != null
+                ? classTree.simpleName()
+                : classTree;
+
             reportIssue(
-                    classTree.simpleName(),
+                    issueLocation,
                     "MLCQ Data Class detected (WOC="
                             + round(woc)
                             + ", NOPA="

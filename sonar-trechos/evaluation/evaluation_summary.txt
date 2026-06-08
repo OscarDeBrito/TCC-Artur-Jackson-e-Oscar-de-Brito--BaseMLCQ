@@ -1,19 +1,19 @@
 === AVALIAÇÃO SONAR X MLCQ GROUND TRUTH ===
 
 Linhas válidas do ground truth: 8574
-Detecções Sonar por ocorrência: 864
-Pares únicos sample+smell detectados pelo Sonar: 686
+Detecções Sonar por ocorrência: 869
+Pares únicos sample+smell detectados pelo Sonar: 690
 Detecções Sonar sem par correspondente no ground truth: 266
 
 === MÉTRICAS MICRO ===
 TP: 225
-FP: 195
+FP: 199
 FN: 582
-TN: 7572
-Precision: 0.5357
+TN: 7568
+Precision: 0.5307
 Recall: 0.2788
-F1: 0.3667
-Accuracy: 0.9094
+F1: 0.3656
+Accuracy: 0.9089
 
 === ARQUIVOS GERADOS ===
 sonar-trechos/evaluation/comparison_sample_smell.csv

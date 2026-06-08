@@ -33,8 +33,11 @@ public class BlobGodClassCheck extends IssuableSubscriptionVisitor {
         double tcc = calculateTcc(classTree, methods);
 
         if (wmc >= WMC_THRESHOLD && atfd > ATFD_THRESHOLD && tcc < TCC_THRESHOLD) {
+            Tree issueLocation = classTree.simpleName() != null
+                ? classTree.simpleName()
+                : classTree;
             reportIssue(
-                    classTree.simpleName(),
+                    issueLocation,
                     "Blob/God Class detected (WMC="
                             + wmc
                             + ", ATFD="
