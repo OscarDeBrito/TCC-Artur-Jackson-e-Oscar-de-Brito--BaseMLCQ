@@ -8,7 +8,7 @@ from openpyxl import load_workbook
 
 
 GROUND_TRUTH_XLSX = Path("Analise-base-MLCQ/MLCQ_ground_truth_completo.xlsx")
-SONAR_PREDICTIONS_JSONL = Path("sonar-trechos/sonar_sample_predictions.jsonl")
+SONAR_PREDICTIONS_JSONL = Path("sonar-trechos/sonar_sample_summary.jsonl")
 
 OUTPUT_DIR = Path("sonar-trechos/evaluation")
 OUTPUT_DIR.mkdir(parents=True, exist_ok=True)

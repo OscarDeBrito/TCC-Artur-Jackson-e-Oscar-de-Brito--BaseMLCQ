@@ -1,7 +1,7 @@
 import json
 
 INPUT = "sonar-trechos/sonar_snippet_issues_joined.jsonl"
-OUTPUT = "sonar-trechos/sonar_sample_predictions.jsonl"
+OUTPUT = "sonar-trechos/sonar_sample_summary.jsonl"
 
 
 def normalize_smell(rule):
