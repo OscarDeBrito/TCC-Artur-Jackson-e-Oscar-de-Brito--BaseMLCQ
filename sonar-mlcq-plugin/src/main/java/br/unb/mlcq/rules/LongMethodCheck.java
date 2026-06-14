@@ -11,8 +11,8 @@ import java.util.List;
 @Rule(key = MlcqRulesDefinition.LONG_METHOD_RULE_KEY)
 public class LongMethodCheck extends IssuableSubscriptionVisitor {
 
-    private static final int LOC_THRESHOLD = 80;
-    private static final int CYCLO_THRESHOLD = 8;
+    private static final int LOC_THRESHOLD = 79;
+    private static final int CYCLO_THRESHOLD = 9;
 
     @Override
     public List<Tree.Kind> nodesToVisit() {

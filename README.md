@@ -111,10 +111,11 @@ Ainda em `Script-Api-LLMs`, execute:
 python main.py
 ```
 
+Por padrão, essa execucao roda `openai`, `deepseek` e `claude`. Se quiser incluir o `gemini`, passe explicitamente `--providers`.
+
 Provedores disponiveis:
 
 - `openai`
-- `gemini`
 - `deepseek`
 - `claude`
 

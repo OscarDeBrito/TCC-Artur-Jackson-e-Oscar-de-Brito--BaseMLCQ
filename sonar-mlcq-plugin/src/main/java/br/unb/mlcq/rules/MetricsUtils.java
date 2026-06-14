@@ -1,6 +1,7 @@
 package br.unb.mlcq.rules;
 
 import org.sonar.plugins.java.api.tree.BaseTreeVisitor;
+import org.sonar.plugins.java.api.tree.BinaryExpressionTree;
 import org.sonar.plugins.java.api.tree.CaseLabelTree;
 import org.sonar.plugins.java.api.tree.ClassTree;
 import org.sonar.plugins.java.api.tree.ConditionalExpressionTree;
@@ -206,6 +207,16 @@ public final class MetricsUtils {
         public void visitConditionalExpression(ConditionalExpressionTree tree) {
             complexity++;
             super.visitConditionalExpression(tree);
+        }
+
+        @Override
+        public void visitBinaryExpression(BinaryExpressionTree tree) {
+            if (tree.is(Tree.Kind.CONDITIONAL_AND)
+                    || tree.is(Tree.Kind.CONDITIONAL_OR)) {
+                complexity++;
+            }
+
+            super.visitBinaryExpression(tree);
         }
 
         public int getComplexity() {

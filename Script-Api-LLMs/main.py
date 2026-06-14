@@ -1,4 +1,5 @@
 import argparse
+import random
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -12,13 +13,14 @@ from pipeline import AVAILABLE_PROVIDERS, run_all_providers_for_prompt
 BASE_DIR = Path(__file__).resolve().parent
 OUTPUT_FILE = BASE_DIR / "outputs.jsonl"
 PROMPTS_FILE = BASE_DIR / "prompts.json"
+DEFAULT_PROVIDERS = [provider for provider in AVAILABLE_PROVIDERS if provider != "gemini"]
 
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Executa os prompts nos provedores configurados.")
     parser.add_argument(
         "--providers",
-        default=",".join(AVAILABLE_PROVIDERS),
+        default=",".join(DEFAULT_PROVIDERS),
         help="Lista de provedores separados por vírgula. Ex.: gemini ou openai,gemini",
     )
     parser.add_argument(
@@ -29,7 +31,7 @@ def parse_args():
     parser.add_argument(
         "--max-workers",
         type=int,
-        default=10,
+        default=2,
         help="Quantidade de prompts rodando em paralelo.",
     )
     parser.add_argument(
@@ -116,6 +118,8 @@ def main():
         only_ids = {int(x.strip()) for x in args.only_ids.split(",") if x.strip()}
         prompts = [p for p in prompts if int(p["id"]) in only_ids]
 
+    random.shuffle(prompts)
+
     selected_providers = [value.strip().lower() for value in args.providers.split(",") if value.strip()]
 
     invalid = [provider for provider in selected_providers if provider not in AVAILABLE_PROVIDERS]
@@ -173,7 +177,7 @@ def main():
                     f"| concluídos: {completed} | pulados: {skipped}"
                 )
 
-    print("Finalizado 🚀")
+    print("Finalizado")
     print(f"Concluídos agora: {completed}")
     print(f"Pulados por já existirem: {skipped}")
 
