@@ -31,7 +31,7 @@ def parse_args():
     parser.add_argument(
         "--max-workers",
         type=int,
-        default=2,
+        default=3,
         help="Quantidade de prompts rodando em paralelo.",
     )
     parser.add_argument(

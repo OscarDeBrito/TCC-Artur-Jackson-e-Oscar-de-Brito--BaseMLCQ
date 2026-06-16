@@ -4,6 +4,5 @@ env/
 .venv/
 /code_cache/
 .scannerwork/
-*.log
 target/
 parse_error_files.txt

@@ -122,7 +122,7 @@ Provedores disponiveis:
 ### 2. Rodar apenas um provedor
 
 ```powershell
-python main.py --providers gemini
+python3 main.py --providers gemini
 ```
 
 ### 3. Rodar combinacao de provedores
