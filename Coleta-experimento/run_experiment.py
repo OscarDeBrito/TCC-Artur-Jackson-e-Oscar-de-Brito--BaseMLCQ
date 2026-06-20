@@ -209,20 +209,7 @@ def main():
         for treatment in treatment_order:
             if treatment == "sonar":
                 print(f"    Tratamento Sonar sorteado para sample={sample_id}")
-
-                if not sonar_has_run:
-                    run_sonar_for_sample(sample_id)
-                    sonar_has_run = True
-
-                write_log({
-                    "sample_id": sample_id,
-                    "treatment": "sonar",
-                    "kind": "sonar",
-                    "status": "covered_by_global_sonar_run",
-                    "started_at": now_iso(),
-                    "ended_at": now_iso(),
-                })
-
+                run_sonar_for_sample(sample_id)
                 continue
 
             model, prompt_version = parse_llm_treatment(treatment)
