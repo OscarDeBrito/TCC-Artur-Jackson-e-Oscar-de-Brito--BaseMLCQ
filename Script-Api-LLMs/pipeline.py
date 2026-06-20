@@ -4,12 +4,10 @@ from io_helpers import append_jsonl, now_iso
 from prompt_builder import build_prompt
 from providers.claude_provider import MODEL_NAME as CLAUDE_MODEL, call_claude
 from providers.deepseek_provider import MODEL_NAME as DEEPSEEK_MODEL, call_deepseek
-from providers.gemini_provider import MODEL_NAME as GEMINI_MODEL, call_gemini
 from providers.openai_provider import MODEL_NAME as OPENAI_MODEL, call_openai
 
 PROVIDERS = [
     ("openai", OPENAI_MODEL, call_openai),
-    ("gemini", GEMINI_MODEL, call_gemini),
     ("deepseek", DEEPSEEK_MODEL, call_deepseek),
     ("claude", CLAUDE_MODEL, call_claude),
 ]
