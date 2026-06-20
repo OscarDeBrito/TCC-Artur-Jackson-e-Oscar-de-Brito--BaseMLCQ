@@ -1,5 +1,4 @@
 import argparse
-import random
 from pathlib import Path
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
@@ -117,8 +116,6 @@ def main():
     if args.only_ids:
         only_ids = {int(x.strip()) for x in args.only_ids.split(",") if x.strip()}
         prompts = [p for p in prompts if int(p["id"]) in only_ids]
-
-    random.shuffle(prompts)
 
     selected_providers = [value.strip().lower() for value in args.providers.split(",") if value.strip()]
 
