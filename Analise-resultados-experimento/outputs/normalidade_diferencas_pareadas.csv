@@ -1,0 +1,22 @@
+tratamento_1,tratamento_2,variavel,n,media_diferenca,mediana_diferenca,desvio_padrao_diferenca,statistic,p_value,alpha,decisao
+chatgpt_few_shot,chatgpt_zero_shot,diferenca_pareada_acerto,8711,-0.04649293996096889,0.0,0.3138901427816018,2297.928131927189,0.0,0.05,rejeita normalidade
+chatgpt_few_shot,claude_few_shot,diferenca_pareada_acerto,8711,0.021696705315118817,0.0,0.32017850264907577,1459.2318303193606,0.0,0.05,rejeita normalidade
+chatgpt_few_shot,claude_zero_shot,diferenca_pareada_acerto,8710,0.0002296211251435132,0.0,0.3428986187080352,1033.7674435865988,3.313231941452448e-225,0.05,rejeita normalidade
+chatgpt_few_shot,deepseek_few_shot,diferenca_pareada_acerto,8711,-0.05441395936172655,0.0,0.33580921392768603,1959.5784882643684,0.0,0.05,rejeita normalidade
+chatgpt_few_shot,deepseek_zero_shot,diferenca_pareada_acerto,8711,-0.045689358282631154,0.0,0.3661660416815993,1228.0627678644769,2.135788495365825e-267,0.05,rejeita normalidade
+chatgpt_few_shot,sonarqube,diferenca_pareada_acerto,8711,-0.06417173688439903,0.0,0.4298196026527012,622.4020287504666,7.032612595270297e-136,0.05,rejeita normalidade
+chatgpt_zero_shot,claude_few_shot,diferenca_pareada_acerto,8711,0.0681896452760877,0.0,0.3645444998744996,1581.8763105014023,0.0,0.05,rejeita normalidade
+chatgpt_zero_shot,claude_zero_shot,diferenca_pareada_acerto,8710,0.046727898966704935,0.0,0.3498571375051326,1506.135478775835,0.0,0.05,rejeita normalidade
+chatgpt_zero_shot,deepseek_few_shot,diferenca_pareada_acerto,8711,-0.007921019400757663,0.0,0.30352945819683813,1376.6923667408423,1.1351439088094556e-299,0.05,rejeita normalidade
+chatgpt_zero_shot,deepseek_zero_shot,diferenca_pareada_acerto,8711,0.0008035816783377339,0.0,0.33457383742577773,1092.170622029489,6.889104584268184e-238,0.05,rejeita normalidade
+chatgpt_zero_shot,sonarqube,diferenca_pareada_acerto,8711,-0.017678796923430145,0.0,0.35847576691036426,1000.6132524251976,5.243158375138363e-218,0.05,rejeita normalidade
+claude_few_shot,claude_zero_shot,diferenca_pareada_acerto,8710,-0.021469575200918484,0.0,0.3032690547710832,1701.2375922649908,0.0,0.05,rejeita normalidade
+claude_few_shot,deepseek_few_shot,diferenca_pareada_acerto,8711,-0.07611066467684537,0.0,0.3659657856874452,1670.588256315617,0.0,0.05,rejeita normalidade
+claude_few_shot,deepseek_zero_shot,diferenca_pareada_acerto,8711,-0.06738606359774997,0.0,0.3874382852478428,1157.0424083755945,5.642003577720195e-252,0.05,rejeita normalidade
+claude_few_shot,sonarqube,diferenca_pareada_acerto,8711,-0.08586844219951785,0.0,0.4515276284163341,484.9210980377232,5.020205346313922e-106,0.05,rejeita normalidade
+claude_zero_shot,deepseek_few_shot,diferenca_pareada_acerto,8710,-0.05464982778415614,0.0,0.37181482006148525,1259.0375781292605,4.012949133354147e-274,0.05,rejeita normalidade
+claude_zero_shot,deepseek_zero_shot,diferenca_pareada_acerto,8710,-0.045924225028702644,0.0,0.37483571783129055,1111.4075596849586,4.580520610494627e-242,0.05,rejeita normalidade
+claude_zero_shot,sonarqube,diferenca_pareada_acerto,8710,-0.06440872560275546,0.0,0.4327380542020565,596.6549528258319,2.741720591192702e-130,0.05,rejeita normalidade
+deepseek_few_shot,deepseek_zero_shot,diferenca_pareada_acerto,8711,0.008724601079095397,0.0,0.29758633520741523,1445.2279839587447,0.0,0.05,rejeita normalidade
+deepseek_few_shot,sonarqube,diferenca_pareada_acerto,8711,-0.009757777522672484,0.0,0.3472328845445601,1033.8246521693309,3.219801909885415e-225,0.05,rejeita normalidade
+deepseek_zero_shot,sonarqube,diferenca_pareada_acerto,8711,-0.01848237860176788,0.0,0.35473253407107486,1039.6228844985953,1.773205219364882e-226,0.05,rejeita normalidade

@@ -1,0 +1,8 @@
+treatment,variavel,n,media,mediana,desvio_padrao,statistic,p_value,alpha,decisao
+chatgpt_few_shot,acerto_binario_por_sample_smell,8711,0.8331994030536104,1.0,0.3728191437751024,2474.26956224827,0.0,0.05,rejeita normalidade
+chatgpt_zero_shot,acerto_binario_por_sample_smell,8711,0.8796923430145792,1.0,0.3253396309790215,3755.0122045233747,0.0,0.05,rejeita normalidade
+claude_few_shot,acerto_binario_por_sample_smell,8711,0.8115026977384916,1.0,0.3911312202089126,2027.9910377869355,0.0,0.05,rejeita normalidade
+claude_zero_shot,acerto_binario_por_sample_smell,8710,0.8329506314580941,1.0,0.37304135700051444,2468.318765544564,0.0,0.05,rejeita normalidade
+deepseek_few_shot,acerto_binario_por_sample_smell,8711,0.887613362415337,1.0,0.31585967502346024,4022.965438750836,0.0,0.05,rejeita normalidade
+deepseek_zero_shot,acerto_binario_por_sample_smell,8711,0.8788887613362415,1.0,0.32627523250929374,3728.7722771152057,0.0,0.05,rejeita normalidade
+sonarqube,acerto_binario_por_sample_smell,8711,0.8973711399380094,1.0,0.3034909401584759,4378.572174064486,0.0,0.05,rejeita normalidade

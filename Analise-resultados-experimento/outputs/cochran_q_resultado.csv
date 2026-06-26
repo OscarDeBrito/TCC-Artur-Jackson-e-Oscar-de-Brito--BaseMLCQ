@@ -1,0 +1,2 @@
+teste,n_blocos,k_tratamentos,q_statistic,p_value,alpha,decisao,kendall_w
+Cochran's Q,8710,7,886.961892901619,2.473720495877564e-188,0.05,rejeita H0,0.0169720989839575
